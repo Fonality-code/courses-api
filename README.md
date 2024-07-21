@@ -1,2 +1,2 @@
-# courses-api
-afri academy course management api
+# fastapi template 
+fastapi template 
