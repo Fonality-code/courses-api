@@ -1,7 +1,10 @@
 from config.config import Settings
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_versioning import VersionedFastAPI
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Request
+from pydantic import ValidationError as PydanticValidationError
+from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
 
 from database.mongod import init_db
 
@@ -13,9 +16,22 @@ app = FastAPI(
 )
 
 
-app = VersionedFastAPI(app, enable_latest=True, version_format='{major}',
-    prefix_format='/v{major}')
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"error": exc.detail},
+    )
 
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    return JSONResponse(
+        status_code=422,
+        content={
+            "error": "Validation error",
+            "details": exc.errors()
+        }
+    )
 
 
 
@@ -51,4 +67,7 @@ def index():
 def api_healthcheck():
     return "OK 200 - app running successfully"
 
+
+app = VersionedFastAPI(app, enable_latest=True, version_format='{major}',
+    prefix_format='/v{major}')
 
