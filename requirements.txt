@@ -13,3 +13,5 @@ httpx
 asgi_lifespan
 pytest-asyncio
 black
+mongomock
+mongomock-motor
