@@ -1,10 +1,9 @@
 """
 Test user route
 """
+
 import pytest
 from httpx import AsyncClient
-
-
 
 
 @pytest.mark.asyncio

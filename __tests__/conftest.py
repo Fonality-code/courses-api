@@ -1,4 +1,5 @@
 """Tests fixtures."""
+
 import pytest
 from asgi_lifespan import LifespanManager
 from httpx import AsyncClient

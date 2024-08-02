@@ -14,5 +14,3 @@ class Settings(BaseSettings):
 
     TESTING: bool = False
     DEBUG: bool = False
-    
-
