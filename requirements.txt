@@ -10,3 +10,6 @@ fastapi-versioning
 beanie
 pytest
 httpx
+asgi_lifespan
+pytest-asyncio
+black
