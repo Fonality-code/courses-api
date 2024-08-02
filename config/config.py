@@ -9,5 +9,10 @@ class Settings(BaseSettings):
     APP_NAME: str = "API"
     APP_VERSION: str = "1.0.0"
     APP_DESCRIPTION: str = ""
-    MONGODB_URL: str
-    DATABASE_NAME: str
+    MONGODB_URL: str | None = None
+    DATABASE_NAME: str | None = None
+
+    TESTING: bool = False
+    DEBUG: bool = False
+    
+

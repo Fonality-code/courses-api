@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from pymongo import MongoClient
 from config.config import Settings
 from beanie import init_beanie
+from mongomock_motor import AsyncMongoMockClient
 
 
 # models
@@ -17,7 +18,9 @@ def init_db(app: FastAPI, mock_data=False):
     async def startup_db():
         print("Starting up")
         # Create a new client and connect to the server
-        client = AsyncIOMotorClient(Settings().MONGODB_URL, server_api=ServerApi("1"))
+
+        client = AsyncMongoMockClient() if Settings().TESTING else  AsyncIOMotorClient(Settings().MONGODB_URL, server_api=ServerApi("1"))
+
         app.mongodb_client = client
         # Send a ping to confirm a successful connection
         database = client[Settings().DATABASE_NAME]
