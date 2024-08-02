@@ -12,7 +12,6 @@ from mongomock_motor import AsyncMongoMockClient
 
 documents = []
 
-
 def init_db(app: FastAPI, mock_data=False):
 
     async def startup_db():
