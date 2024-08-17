@@ -1,12 +1,19 @@
 from config.config import Settings
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_versioning import VersionedFastAPI
+from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI
 import asyncio
-
+from config.config import Settings
+import os
 
 from database.mongod import init_db
 from routes import init_router
+
+
+async def start_up():
+    print("Starting up the app")
+    await init_db()
 
 
 def init_app():
@@ -15,9 +22,10 @@ def init_app():
         title=Settings().APP_NAME,
         version=Settings().APP_VERSION,
         description=Settings().APP_DESCRIPTION,
+
     )
+
     # Await the async init_db function
-    init_db(app_)
     init_router(app_)
 
     app_ = VersionedFastAPI(
@@ -35,6 +43,9 @@ def init_app():
     @app_.get("/healthcheck", status_code=200)
     def api_healthcheck():
         return "OK 200 - app running successfully"
+
+    app_.add_event_handler("startup", start_up)
+
 
     return app_
 
