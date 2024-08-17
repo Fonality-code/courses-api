@@ -15,16 +15,18 @@ class ErrorResponse(BaseModel):
     error: str
     details: list[ValidationError] | None = None
 
-    class Config:
-        schema_extra = {
+    model_config = ConfigDict(
+        extra="ignore",
+        arbitrary_types_allowed=True,
+        json_schema_extra={
             "example": {
-                "error": "Invalid input",
+                "error": "Validation Error",
                 "details": [
                     {
-                        "loc": ["body", "title"],
-                        "msg": "Field required",
+                        "msg": "field required",
                         "type": "value_error.missing",
                     }
                 ],
             }
-        }
+        },
+    )
